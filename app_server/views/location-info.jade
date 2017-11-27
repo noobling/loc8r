@@ -1,0 +1,88 @@
+extends layout
+
+block content
+  .row.page-header
+    .col-lg-12
+      h1 Starcups
+  .row
+    .col-xs-12.col-md-9
+      .row
+        .col-xs-12.col-sm-6
+          p.rating
+            span.glyphicon.glyphicon-star
+            span.glyphicon.glyphicon-star
+            span.glyphicon.glyphicon-star
+            span.glyphicon.glyphicon-star-empty
+            span.glyphicon.glyphicon-star-empty
+          
+          p 125 high street, reading, RNG 153
+          
+          .panel.panel-primary
+            .panel-heading
+              h2.panel-title Opening Hours
+            .panel-body
+              p Monday - Friday : 7:00am - 9:00pm
+              p Saturday : 8:00am - 5:00pm
+              p Sunday : closed
+          
+          .panel.panel-primary
+            .panel-heading
+              h2.panel-title Facilities
+            .panel-body
+              span.label.label-warning
+                span.glyphicon.glyphicon-ok 
+                | &nbsp;Hot drinks
+              | &nbsp;  
+              span.label.label-warning
+                span.glyphicon.glyphicon-ok 
+                | &nbsp;Food
+              | &nbsp;
+              span.label.label-warning
+                span.glyphicon.glyphicon-ok 
+                | &nbsp;Premium wifi
+              | &nbsp;
+        .col-xs-12.col-sm-6.location-map
+          .panel.panel-primary
+            .panel-heading
+              h2.panel-title Location map
+            .panel-body
+              img.img-responsive.im-rounded(src='https://maps.googleapis.com/maps/api/staticmap?center=Brooklyn+Bridge,New+York,NY&zoom=13&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C40.702147,-74.015794')
+      .row
+        .col-xs-12
+          .panel.panel-primary.review-panel
+            .panel-heading
+              a.btn.btn-default.pull-right(href='/location/review/new') Add Review
+              h2.panel-title Reviews
+            .panel-body.review-container
+              .row
+                .review
+                  .well.well-sm.review-header
+                    span.rating
+                      span.glyphicon.glyphicon-star
+                      span.glyphicon.glyphicon-star
+                      span.glyphicon.glyphicon-star
+                      span.glyphicon.glyphicon-star-empty
+                      span.glyphicon.glyphicon-star-empty
+                    span.reviewAuthor David Yu
+                    small.reviewTime 16 August 2018 
+                  .col-xs-12
+
+              .row
+                .review
+                  .well.well-sm.review-header
+                    span.rating
+                      span.glyphicon.glyphicon-star
+                      span.glyphicon.glyphicon-star
+                      span.glyphicon.glyphicon-star
+                      span.glyphicon.glyphicon-star-empty
+                      span.glyphicon.glyphicon-star-empty
+                    span.reviewAuthor Jayden Smith
+                    small.reviewTime 16 August 2018 
+                  .col-xs-12
+                    p It was a brilliant coffee shop
+    
+    .col-xs-12.col-md-3              
+      p.lead Great cafe space to sit down and do stuff
+      p If you have been there please leave a review              
+                  
+                  
