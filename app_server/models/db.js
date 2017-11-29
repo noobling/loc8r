@@ -9,7 +9,6 @@ var promise = mongoose.connect(dbURI, {
   useMongoClient: true,
 });
 
-console.log('URI:' + process.env.MONGODB_URI);
 promise.then(function(db) {
   /* Use `db`, for instance `db.model()`
 });
