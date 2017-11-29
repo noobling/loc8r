@@ -1,11 +1,15 @@
 var mongoose = require( 'mongoose' );
 var gracefulShutdown
 var dbURI = 'mongodb://localhost/Loc8r';
+if (process.env.NODE_ENV === 'production') {
+  dbURI = process.env.MONGODB_URI;
+}
 // Using `mongoose.connect`...
 var promise = mongoose.connect(dbURI, {
   useMongoClient: true,
 });
 
+console.log('URI:' + process.env.MONGODB_URI);
 promise.then(function(db) {
   /* Use `db`, for instance `db.model()`
 });
@@ -57,3 +61,5 @@ process.on('SIGTERM', function() {
     process.exit(0);
   })
 });
+
+require('./locations');
