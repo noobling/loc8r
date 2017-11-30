@@ -120,6 +120,96 @@ module.exports.locationsReadOne = function(req, res) {
     });
 };
 
+module.exports.locationsUpdateOne = function(req, res) {
+  var locationid = req.params.locationid;
+
+  if (!locationid) {
+    sendJSONResponse(res, 404, {
+      "message" : "No location id given"
+    });
+  } else {
+    Loc
+      .findById(locationid)
+      .select('-reviews -rating')
+      .exec(function(esserr, location) {
+        if (!location) {
+          sendJSONResponse(res, 404, {
+            "message": "Could not find location id"
+          });
+        } else if(err) {
+          sendJSONResponse(res, 400, err);
+        } else {
+          /** A better approach to this function */
+          // var lat, lng;
+          // var openingTimes = [];
+          // for (var key in req.body) {
+          //   if (req.body.hasOwnProperty(key)) {
+          //     if (key === 'facilities') {
+          //       location.key = req.body.key.split(',');
+          //     } else if (key === lng) {
+          //       lng = req.body.key;
+          //     } else if (key == lat) {
+          //       lat = req.body.lat;
+          //     } else if (key === 'day1') {
+                
+          //     } else {
+          //       location.key = req.body.key;
+          //     }
+          //   }
+          // }
+          // if (lat && lng) {
+          //   location.coords = [parseFloat(lng), parseFloat(lat)];
+          // }
+          location.name = req.body.name,
+          location.address = req.body.address,
+          location.facilities = req.body.facilities.split(','),
+          location.coords = [parseFloat(req.body.lng), parseFloat(req.body.lat)],
+          location.openingTimes = [{
+            days: req.body.days1,
+            opening: req.body.opening1,
+            closing: req.body.closing1,
+            closed: req.body.closed1
+          }, {
+            days: req.body.days1,
+            opening: req.body.opening1,
+            closing: req.body.closing1,
+            closed: req.body.closed1
+          }]
+
+          /**
+           * Updated the location instance time to
+           * save it to the database
+           */
+          location.save(function(err, location) {
+            if (err) {
+              sendJSONResponse(res, 400, err);
+            } else {
+              sendJSONResponse(res, 201, location);
+            }
+          })
+        }
+      });
+  }
+}
+
+module.exports.locationsDeleteOne = function(req, res) {
+  if (req.params.locationid) {
+    Loc
+    .findByIdAndRemove(req.params.locationid)
+    .exec(function(err, location) {
+      if (err) {
+        sendJSONResponse(res, 400, err);
+      } else {
+        sendJSONResponse(res, 201, null);
+      }
+    })
+  } else {
+    sendJSONResponse(res, 404, {
+      "message": "No locaiton id"
+    });
+  }
+}
+
 sendJSONResponse = function(res, status, content) {
   res.status(status);
   res.json(content);
