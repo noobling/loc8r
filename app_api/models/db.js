@@ -1,6 +1,7 @@
 var mongoose = require( 'mongoose' );
 var gracefulShutdown
-var dbURI = 'mongodb://localhost/Loc8r';
+//var dbURI = 'mongodb://localhost/Loc8r';
+var dbURI = 'mongodb://heroku_01t0s2lg:68i8qeh7sj4pussh1dg7fc8ofc@ds123556.mlab.com:23556/heroku_01t0s2lg';
 if (process.env.NODE_ENV === 'production') {
   dbURI = process.env.MONGODB_URI;
 }

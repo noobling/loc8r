@@ -5,31 +5,34 @@ extends layout
 block content
   .row.page-header
     .col-lg-12
-      h1= pageHeader.title
+      h1= location.name
   .row
     .col-xs-12.col-md-9
       .row
         .col-xs-12.col-sm-6
-          +outputRating(info.rating)
+          +outputRating(location.rating)
           
-          p= info.address
+          p= location.address
           
           .panel.panel-primary
             .panel-heading
-              h2.panel-title= openingTimes.title
+              h2.panel-title Opening Times
             .panel-body
-              p Monday - Friday : #{openingTimes.times.weekdays}
-              p Saturday : #{openingTimes.times.saturday}
-              p Sunday : #{openingTimes.times.sunday}
-          
+              for time in location.openingTimes
+                p 
+                  | #{time.days} : 
+                  if time.closed 
+                    | closed
+                  else 
+                    | #{time.opening} - #{time.closing}   
           .panel.panel-primary
             .panel-heading
               h2.panel-title Facilities
             .panel-body
-              each facility in facilities
+              each facility in location.facilities
                 span.label.label-warning
                   span.glyphicon.glyphicon-ok 
-                  | &nbsp;facilitiy
+                  | &nbsp;#{facility}
                 | &nbsp;  
         .col-xs-12.col-sm-6.location-map
           .panel.panel-primary
@@ -44,15 +47,16 @@ block content
               a.btn.btn-default.pull-right(href='/location/#{location._id}/review/new') Add Review
               h2.panel-title Reviews
             .panel-body.review-container
-              each review in reviews
+              each review in location.reviews
                 .row
                   .review
                     .well.well-sm.review-header
                       +outputRating(review.rating)
-                      span.reviewAuthor= review.author
-                      small.reviewTime= review.timeStamp 
+                      span.reviewAuthor= review.authorName
+                      small.reviewTime
+                        +formatDate(review.createdOn) 
                     .col-xs-12
-                      p= review.userText
+                      p= review.reviewText
 
     .col-xs-12.col-md-3              
       p.lead= aboutLocation

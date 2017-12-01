@@ -79,13 +79,55 @@ module.exports.locationInfo = function(req, res) {
 
 /* GET review page */
 module.exports.addReview = function(req, res) {
-    res.render('location-review', {
-			title: 'Add Review',
-			pageHeader: {
-				title: 'Review Starbucks'
-			}
-		});
+    var requestOptions, path;
+	path = '/api/locations/' + req.params.locationid;
+	requestOptions = {
+		url: apiOptions.server + path,
+		method: 'GET',
+		json: {},
+		qs: {}
+	};
+
+	request(requestOptions, function(err, response, body) {
+		if (err) {
+			console.log('[ERROR] locationsController.addReview: ' + err);
+		}
+
+		renderReviewPage(res, body);
+	});
 }
+
+/** 
+ * POST
+ * Create a new review
+ */
+module.exports.createReview = function(req, res) {
+	var requestOptions, path;
+	path = '/api/locations/' + req.params.locationid + '/reviews';
+	requestOptions = {
+		url: apiOptions.server + path,
+		method: 'POST',
+		json: {
+			authorName: req.body.name,
+			rating: parseInt(req.body.rating, 10),
+			reviewText: req.body.review
+		},
+		qs: {}
+	};
+
+	request(requestOptions, function(err, response, body) {
+		if (err) {
+			console.log('[ERROR] locationsController.createReview: ' + err);
+		}
+		if (response.statusCode === 201) {
+			res.redirect('/locations/' + req.params.locationid);
+		} else {
+			renderErrorPage(res, response.statusCode, body);
+		}
+		
+	});
+}
+
 
 var renderHomeList = function(res, err, response, responseBody) {
 	/**
@@ -121,6 +163,7 @@ var renderHomeList = function(res, err, response, responseBody) {
 }
 
 var renderLocationInfo = function(res, body) {
+	console.log(body);
 	res.render('location-info', {
 		title: body.name,
 		pageHeader: {
@@ -166,3 +209,21 @@ var renderErrorPage = function(res, statusCode, content) {
 	else { payload.content = 'Something went wrong :/' }
 	res.render('error-page', payload);
 }; 
+
+
+/**
+ * Displays {content} into the view 'location-review'
+ * This view is used to display the location review form 
+ * to the user
+ * 
+ * @param {*} res 
+ * @param {JSON} content data to be passed onto the view
+ */
+var renderReviewPage = function(res, content) {
+	res.render('location-review', {
+		title: 'Add Review',
+		pageHeader: {
+			title: content.name
+		}
+	});
+}

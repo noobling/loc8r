@@ -6,10 +6,6 @@ var sendJSONResponse = function(res, status, content) {
   res.json(content);
 }
 
-module.exports.createReview = function(req, res) {
-
-};
-
 module.exports.reviewsReadOne = function(req, res) {
   Loc
     .findById(req.params.locationid)
@@ -154,10 +150,11 @@ var addReview = function(location, res, req) {
       "message": "No location found"
     });
   } else {
+    console.log(req.body);
     location.reviews.push({
       authorName: req.body.authorName,
       rating: req.body.rating,
-      userText: req.body.userText
+      reviewText: req.body.reviewText
     });
     location.save(function(err, location) {
       if (err) {
