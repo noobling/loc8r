@@ -8,53 +8,12 @@ if (process.env.NODE_ENV === 'production') {
 
 /* GET home page */
 module.exports.homelist = function(req, res) {
-	var requestOptions, path;
-	path = '/api/locations';
-	requestOptions = {
-		url: apiOptions.server + path,
-		method: 'GET',
-		json: {},
-		qs: {
-			lng: -0.799192,
-			lat: 59.32121
+	res.render('location-list', {
+		pageHeader: {
+			title: 'Loc8r-find some wifi',
+			tagline: 'Helps you find places to work near you!'
 		}
-	}
-	
-	request(requestOptions, function(err, response, body) {
-		if (response.statusCode === 200) {
-			/**
-			 * Everything went well with API call now try to
-			 * display the contents back to the user
-			 */
-
-			if (err) {
-				console.log('[ERROR] locationsController.homelist: ' + err);
-			}
-			var l = body.length;
-			var i;
-		
-			/** 
-			 * Round off the location distances 
-			 * and add units
-			 **/
-			for (i = 0; i < l; i++) {
-				body[i].distance = parseInt(body[i].distance) + 'km';
-			}
-
-			/** Display contents back to user */
-			renderHomeList(res, err, response, body);
-		} else {
-			/**
-		 	* API did not return 200 OK so there was an error
-		 	*/
-			if (err) {
-				renderErrorPage(res, response.status, err)
-			} else {
-				renderErrorPage(res, response.statusCode, body);
-			}
-		}
-
-	});
+	})
 }
 
 /* GET locations info */
@@ -128,39 +87,6 @@ module.exports.createReview = function(req, res) {
 	});
 }
 
-
-var renderHomeList = function(res, err, response, responseBody) {
-	/**
-	 * Can't get any locations
-	 */
-	if (responseBody.message) {
-		res.render('location-list', {
-			title: 'Home',
-			pageHeader: {
-				title: 'Loc8r',
-				tagline: 'Find places to work with wifi near you!'
-			},
-			error: err,
-			message: responseBody.message,
-			locations: undefined
-		});
-
-	/**
-	 * Render locations back to user
-	 */
-	} else {
-		res.render('location-list', {
-			title: 'Home',
-			pageHeader: {
-				title: 'Loc8r',
-				tagline: 'Find places to work with wifi near you!'
-			},
-			error: err,
-			locations: responseBody
-		});
-	}
-
-}
 
 var renderLocationInfo = function(res, body) {
 	console.log(body);
